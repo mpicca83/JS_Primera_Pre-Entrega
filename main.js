@@ -1,14 +1,17 @@
 let cliente = ''
 let codigoProducto = 0
 let producto = {}
+let productosComprados = []
+let detalleProductos = ''
 let cantidad = 0
 let subTotal = 0
 let seguirComprando = true
 let formaPago = ''
 let formaEnvio = ''
-const descuento = 0.9
+let costoEnvio = 0
+const descuento = 0.1
+let importeDescuento = 0
 let direccion = ''
-let tarjeta = 0
 
 const inicio = () =>{
     cliente = prompt('Bienvenido a la tienda on-line del Rey de la Limpieza, por favor ingrese su nombre:')
@@ -17,11 +20,21 @@ const inicio = () =>{
        alert('El nombre ingresado no es valido.')
        inicio()
     }else{
-        //operacion()
+        productosComprados = []
+        detalleProductos = ''
         comprar()
         envio()
         pagar()
-        alert(`Muchas gracias ${cliente} por su compra!`)
+        alert(`Muchas gracias por su compra! 
+        Se adjunta un detalle de la misma:
+        - Cliente: ${cliente}
+        - Productos: ${detalleProductos}
+        - Forma de envío: ${formaEnvio}
+        - Dirección de envío: ${direccion}
+        - Costo por envío: $${costoEnvio}
+        - Forma de pago: ${formaPago}
+        - Descuento por pago de contado: -$${importeDescuento}
+        - Total a Pagar: $${subTotal}`)
     }
 }
 
@@ -35,7 +48,6 @@ const ingresarProducto = () =>{
 }
 
 const buscarProducto = () =>{
-    
     switch (codigoProducto) {
         case 1:
             producto.nombre = 'Jabón líquido para ropa x 1L'
@@ -124,20 +136,25 @@ const comprar = () =>{
 
         subTotal += producto.precio * cantidad
 
+        detalleProductos += `\n            * ${cantidad} x ${producto.nombre} = $${producto.precio * cantidad}`
+
         seguirComprando = confirm('El importe total del carrito de compra es de $'+ subTotal +'. Desea agregar otro producto?')
 
     }while(seguirComprando)
-
-
 }
 
 const envio = () =>{
     formaEnvio = prompt('El envío a domicilio tiene un costo de $500. Ingrese "SI" para enviar a domicilio o ingrese "NO" para retirar el pedido.').toUpperCase()
     if(formaEnvio==="SI"){
         direccion = prompt('Ingrese la dirección para que le enviemos el pedido.')
-        subTotal+=500
+        costoEnvio = 500
+        subTotal += costoEnvio
+        formaEnvio = 'ENVÍO A DOMICILIO'
     }else if(formaEnvio==="NO"){
         alert('Usted eligió retiro por local.')
+        formaEnvio = 'RETIRO POR EL LOCAL.'
+        direccion = ''
+        costoEnvio = 0
     }else{
         alert('El valor ingresado no es correcto.')
         envio()
@@ -147,7 +164,8 @@ const envio = () =>{
 const pagar = () =>{
     formaPago = prompt('Si realiza el pago de contado se realizará un descuento del 10% sobre el total de la compra. Elija la forma de pago. ¿Efectivo o Tarjeta?').toUpperCase()
     if (formaPago==="EFECTIVO"){
-        subTotal=subTotal*descuento
+        importeDescuento = subTotal*descuento
+        subTotal = subTotal - importeDescuento
         alert('Se aplico un descuento del 10%. El total a pagar es $'+subTotal)
     }else if(formaPago==="TARJETA"){
         alert('El pago se realizará con tarjeta. El total a pagar es $'+subTotal)
@@ -156,8 +174,3 @@ const pagar = () =>{
         pagar()
     }
 }
-
-
-
-
-
