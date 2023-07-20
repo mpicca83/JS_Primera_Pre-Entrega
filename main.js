@@ -21,6 +21,8 @@ btnRealizarCompra.onclick = () => {
 }
 
 const inicio = () =>{
+    carrito = []
+    detalleProductos = []
     do{
         cliente = prompt('Bienvenido a la tienda on-line del Rey de la Limpieza.\nPor favor ingrese su nombre:')
         if(cliente===null || cliente===''){
@@ -82,7 +84,6 @@ const confirmacion =() =>{
         envio()
     }else{
         alert("La compra fue cancelada.\nQue tenga un buen día.")
-        carrito = []
     }
 }
 
@@ -112,6 +113,7 @@ const pagar = () =>{
         formaPago = "Efectivo"
         alert('Se aplico un descuento del 10%.\nEl total a pagar es $'+subTotal)
     }else{
+        importeDescuento = 0
         formaPago = "Tarjeta"
         alert('El pago se realizará con tarjeta.\nEl total a pagar es $'+subTotal)
     }
